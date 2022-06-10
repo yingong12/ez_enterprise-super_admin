@@ -1,0 +1,115 @@
+definitions:
+  model.AuthStatus:
+    properties:
+      app_id:
+        type: string
+      expire_at:
+        description: 过期时间
+        example: "2022-05-16 23:00:00"
+        type: string
+      uid:
+        description: b端用户id
+        example: u_12345678901
+        type: string
+    type: object
+  request.SignInUsernameRequest:
+    properties:
+      password:
+        description: 密码，需要包含大小写数字和特殊字符
+        type: string
+      username:
+        description: 用户名
+        example: zhuyan
+        type: string
+    type: object
+  request.SignUpUsernameRequest:
+    properties:
+      password:
+        description: 密码，需要包含大小写数字和特殊字符
+        type: string
+      username:
+        description: 用户名
+        example: zhuyan
+        type: string
+    type: object
+  response.SignInUsernameRsp:
+    properties:
+      b_access_token:
+        description: b端用户token
+        example: b_u_uasdasd
+        type: string
+      uid:
+        description: 用户ID
+        type: string
+    type: object
+  response.SignUpRsp:
+    properties:
+      b_access_token:
+        description: b端用户token
+        example: b_u_uasdasd
+        type: string
+      uid:
+        description: 用户ID
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /auth/check:
+    get:
+      description: 登录态校验
+      parameters:
+      - description: b端用户token
+        in: header
+        name: b_access_token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.AuthStatus'
+      summary: 登录态校验
+      tags:
+      - 登录态校验
+  /signin/username:
+    post:
+      description: 用户名登录
+      parameters:
+      - description: 注释
+        in: body
+        name: xxx
+        schema:
+          $ref: '#/definitions/request.SignInUsernameRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.SignInUsernameRsp'
+      summary: 用户名登录
+      tags:
+      - ""
+  /signup/username:
+    post:
+      description: 用户名注册
+      parameters:
+      - description: 注释
+        in: body
+        name: xxx
+        schema:
+          $ref: '#/definitions/request.SignUpUsernameRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.SignUpRsp'
+      summary: 用户名注册
+      tags:
+      - ""
+swagger: "2.0"
