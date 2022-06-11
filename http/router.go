@@ -32,6 +32,7 @@ func loadRouter() (router *gin.Engine) {
 	{
 		user.POST("create", controller.STDwrapperJSON(controller.AddUser))
 		user.POST("update", controller.STDwrapperJSON(controller.UpdateUser))
+		user.POST("search", controller.STDwrapperJSON(controller.SearchUser))
 	}
 	return
 }

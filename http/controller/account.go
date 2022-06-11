@@ -80,10 +80,23 @@ func UpdateUser(ctx *gin.Context) (res *STDResponse, err error) {
 	return
 }
 
-func UpdatePswd(ctx *gin.Context) {
-
-}
-
-func GetAssets(ctx *gin.Context) {
-
+func SearchUser(ctx *gin.Context) (res *STDResponse, err error) {
+	req := request.SearchUser{}
+	res = &STDResponse{}
+	if err = ctx.BindJSON(&req); err != nil {
+		res.Code = buz_code.CODE_INVALID_ARGS
+		res.Msg = err.Error()
+		return
+	}
+	list, err := service.SearchUser(req.Filters, req.Page, req.PageSize)
+	if err != nil {
+		res.Code = buz_code.CODE_SERVER_ERROR
+		res.Msg = err.Error()
+		return
+	}
+	res.Data = map[string]interface{}{
+		"list":  list,
+		"total": 0,
+	}
+	return
 }

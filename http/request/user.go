@@ -15,3 +15,14 @@ type SignUpUsernameRequest struct {
 	Password string  `json:"password" exmample:"123456@Zhuyan"`                         //密码，需要包含大小写数字和特殊字符
 	Roles    []uint8 `json:"roles" binding:"dive,required,min=1,max=5" example:"1,2,3"` //角色列表
 }
+
+type SearchUser struct {
+	Filters  []Filter `json:"filters"`
+	Page     int      `json:"page"`
+	PageSize int      `json:"page_size"`
+}
+
+type Filter struct {
+	Type  int    `json:"type"`
+	Value string `json:"value"`
+}

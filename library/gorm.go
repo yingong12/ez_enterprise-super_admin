@@ -2,10 +2,13 @@ package library
 
 import (
 	"fmt"
+	"log"
+	"os"
 	"time"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 	"gorm.io/plugin/dbresolver"
 )
 
@@ -50,9 +53,20 @@ func NewGormDB(conf *GormConfig) (*GormDB, error) {
 		conf.Port,
 		conf.DBName,
 	)
+	slowLogger := logger.New(
+		//将标准输出作为Writer
+		log.New(os.Stdout, "\r\n", log.LstdFlags),
 
+		logger.Config{
+			//设定慢查询时间阈值为1ms
+			SlowThreshold: 1 * time.Microsecond,
+			//设置日志级别，只有Warn和Info级别会输出慢查询日志
+			LogLevel: logger.Warn,
+		},
+	)
 	gormDB, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
 		SkipDefaultTransaction: !conf.EnableTransaction,
+		Logger:                 slowLogger,
 	})
 	if err != nil {
 		err = fmt.Errorf("gorm connection:[%s] Open error:%w", conf.ConnectionName, err)
