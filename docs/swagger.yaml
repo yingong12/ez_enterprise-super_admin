@@ -1,11 +1,9 @@
 definitions:
   model.AuthStatus:
     properties:
-      app_id:
-        type: string
-      expire_at:
-        description: 过期时间
-        example: "2022-05-16 23:00:00"
+      access_token:
+        description: a端用户id
+        example: a_12345678901
         type: string
       uid:
         description: b端用户id
@@ -27,10 +25,21 @@ definitions:
       password:
         description: 密码，需要包含大小写数字和特殊字符
         type: string
+      roles:
+        description: 角色列表
+        example:
+        - 1
+        - 2
+        - 3
+        items:
+          type: integer
+        type: array
       username:
         description: 用户名
         example: zhuyan
         type: string
+    required:
+    - roles
     type: object
   response.SignInUsernameRsp:
     properties:

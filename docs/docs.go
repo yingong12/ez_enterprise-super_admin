@@ -110,13 +110,10 @@ const docTemplate = `{
         "model.AuthStatus": {
             "type": "object",
             "properties": {
-                "app_id": {
-                    "type": "string"
-                },
-                "expire_at": {
-                    "description": "过期时间",
+                "access_token": {
+                    "description": "a端用户id",
                     "type": "string",
-                    "example": "2022-05-16 23:00:00"
+                    "example": "a_12345678901"
                 },
                 "uid": {
                     "description": "b端用户id",
@@ -141,10 +138,25 @@ const docTemplate = `{
         },
         "request.SignUpUsernameRequest": {
             "type": "object",
+            "required": [
+                "roles"
+            ],
             "properties": {
                 "password": {
                     "description": "密码，需要包含大小写数字和特殊字符",
                     "type": "string"
+                },
+                "roles": {
+                    "description": "角色列表",
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    },
+                    "example": [
+                        1,
+                        2,
+                        3
+                    ]
                 },
                 "username": {
                     "description": "用户名",

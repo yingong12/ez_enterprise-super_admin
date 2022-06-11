@@ -20,9 +20,8 @@ func genRandomString(prefix string, strLen int, charset string) string {
 	}
 	return prefix + string(b)
 }
-
-func GenerateAccessToken() string {
-	return genRandomString("", accessTokenLen, charset)
+func GenerateOAccessToken() string {
+	return genRandomString("ot_", accessTokenLen, charset)
 }
 func GenerateUID() string {
 	return genRandomString(uidPrefix, uidLen, charset)

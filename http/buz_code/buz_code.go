@@ -15,6 +15,7 @@ const (
 	CODE_USERNAME_PSWD_NOT_MATCH             // 用户名密码不匹配 9
 	CODE_TOO_MUCH_TRY_SMS                    //1分钟多次请求验证码 10
 	CODE_BAD_SMS_CODE                        //验证码有误 11
+	CODE_NO_SUCH_USER                        //用户不存在 12
 )
 
 const CODE_IDIOT = 250 // 所有无法识别的code都返回250，代表下游是白痴
