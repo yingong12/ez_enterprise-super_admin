@@ -9,6 +9,7 @@ type AuthStatus struct {
 type User struct {
 	UID      string `gorm:"column:uid"`
 	Username string `gorm:"column:username"`
+	Name     string `gorm:"column:name"`
 	Password string `gorm:"column:pswd"`
 	Role     uint8  `gorm:"column:role"`
 	Phone    string `gorm:"column:phone"`
