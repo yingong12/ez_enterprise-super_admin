@@ -19,8 +19,7 @@ import (
 //@Param  b_access_token header string true "b端用户token"
 //@Success 200 {object} model.AuthStatus
 //@Router	/auth/check [get]
-func Check(ctx *gin.Context) (res *STDResponse, err error) {
-	res = &STDResponse{}
+func Check(ctx *gin.Context) (res STDResponse, err error) {
 	token := ctx.GetHeader(env.GetStringVal("TOKEN_KEY"))
 	//参数校验
 	if token == "" {
@@ -55,9 +54,8 @@ func Check(ctx *gin.Context) (res *STDResponse, err error) {
 //@Param xxx body request.SignInUsernameRequest  false "注释"
 //@Success 200 {object} response.SignInUsernameRsp
 //@Router	/signin/username [post]
-func SignInUsername(ctx *gin.Context) (res *STDResponse, err error) {
+func SignInUsername(ctx *gin.Context) (res STDResponse, err error) {
 	req := request.SignInUsernameRequest{}
-	res = &STDResponse{}
 	if err = ctx.BindJSON(&req); err != nil {
 		res.Code = buz_code.CODE_INVALID_ARGS
 		res.Msg = fmt.Sprintf("invalid params %s\n", err.Error())

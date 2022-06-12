@@ -2,6 +2,7 @@ package http
 
 import (
 	"super_admin/http/controller"
+	"super_admin/http/middleware"
 
 	"github.com/gin-gonic/gin"
 )
@@ -9,12 +10,12 @@ import (
 func loadRouter() (router *gin.Engine) {
 	gin.SetMode(gin.DebugMode)
 	router = gin.New()
-	//swagger
-	// router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler)) // register swagger
+	//接口访问日志
+	router.Use(middleware.RequestLogger())
+	//业务错误日志(controller最终抛出)
+	router.Use(middleware.ControllerErrorLogger())
 	//routes
 	router.GET("health", controller.Health)
-	//swagger
-	// router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler)) // register swagger
 	//登录模块
 	auth := router.Group("/auth")
 	{

@@ -23,12 +23,11 @@ func BindPhone(ctx *gin.Context) {
 //@Param xxx body request.SignUpUsernameRequest false "注释"
 //@Success 200 {object} response.SignUpRsp
 //@Router	/signup/username [post]
-func AddUser(ctx *gin.Context) (res *STDResponse, err error) {
+func AddUser(ctx *gin.Context) (res STDResponse, err error) {
 	/*
 		username+pswd
 	*/
 	req := request.SignUpUsernameRequest{}
-	res = &STDResponse{}
 	if err = ctx.BindJSON(&req); err != nil {
 		res.Code = buz_code.CODE_INVALID_ARGS
 		res.Msg = err.Error()
@@ -59,9 +58,8 @@ func AddUser(ctx *gin.Context) (res *STDResponse, err error) {
 	return
 }
 
-func UpdateUser(ctx *gin.Context) (res *STDResponse, err error) {
+func UpdateUser(ctx *gin.Context) (res STDResponse, err error) {
 	req := request.UpdateUser{}
-	res = &STDResponse{}
 	if err = ctx.BindJSON(&req); err != nil {
 		res.Code = buz_code.CODE_INVALID_ARGS
 		res.Msg = err.Error()
@@ -80,9 +78,8 @@ func UpdateUser(ctx *gin.Context) (res *STDResponse, err error) {
 	return
 }
 
-func SearchUser(ctx *gin.Context) (res *STDResponse, err error) {
+func SearchUser(ctx *gin.Context) (res STDResponse, err error) {
 	req := request.SearchUser{}
-	res = &STDResponse{}
 	if err = ctx.BindJSON(&req); err != nil {
 		res.Code = buz_code.CODE_INVALID_ARGS
 		res.Msg = err.Error()
