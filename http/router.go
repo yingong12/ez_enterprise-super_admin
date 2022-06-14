@@ -19,21 +19,28 @@ func loadRouter() (router *gin.Engine) {
 	//登录模块
 	auth := router.Group("/auth")
 	{
-		/**
-		1. 登录态校验  token-> code 0:uid,app_id  code 1: 过期   code 2:wrong token code 3:token missing
-		2. 注册： username,pswd,phone(带验证码) -> token
-		3. 手机登录： phone#, veriCode -> token
-		*/
-		auth.GET("/check", controller.STDwrapperJSON(controller.Check)) //校验登录态
-
-		auth.POST("/signin/username", controller.STDwrapperJSON(controller.SignInUsername)) //用户名注册
+		auth.POST("/signin/username", controller.STDwrapperJSON(controller.SignInUsername)) //用户名登录
 	}
-	//用户
-	user := router.Group("user")
+	//需鉴权的接口
+	guarded := router.Group("")
 	{
-		user.POST("create", controller.STDwrapperJSON(controller.AddUser))
-		user.POST("update", controller.STDwrapperJSON(controller.UpdateUser))
-		user.POST("search", controller.STDwrapperJSON(controller.SearchUser))
+		guarded.Use(middleware.Auth())
+		//用户
+		user := guarded.Group("user")
+		{
+			user.POST("create", controller.STDwrapperJSON(controller.AddUser))
+			user.POST("update", controller.STDwrapperJSON(controller.UpdateUser))
+			user.POST("search", controller.STDwrapperJSON(controller.SearchUser))
+		}
+		//估值
+		valuate := guarded.Group("valuate")
+		{
+			valuate.POST("get_details", controller.STDwrapperJSON(controller.GetValuateDetails))
+		}
+		//转发
+		guarded.Any("enterprise/*url", controller.STDwrapperJSON(controller.ForwardCompanyService))
+		guarded.Any("group/*url", controller.STDwrapperJSON(controller.FowardGroupService))
+		guarded.Any("audit/*url", controller.STDwrapperJSON(controller.FowardAuditService))
 	}
 	return
 }

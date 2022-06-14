@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fmt"
 	"super_admin/http/request"
 	"super_admin/model"
 	"super_admin/providers"
@@ -27,7 +28,7 @@ var dict = []string{
 
 func SearchUser(Filters []request.Filter, page, pageSize int) (res []model.User, err error) {
 	//
-	whereMap := map[string]interface{}{}
+	whereMap := map[string]string{}
 	for _, filter := range Filters {
 		if filter.Type < 0 || filter.Type >= len(dict) {
 			continue
@@ -37,7 +38,8 @@ func SearchUser(Filters []request.Filter, page, pageSize int) (res []model.User,
 	tx := providers.DBAccount.Table(model.User{}.Table())
 
 	for k, v := range whereMap {
-		tx.Where(k, v)
+		s := fmt.Sprintf("%s like ?", k)
+		tx.Where(s, fmt.Sprintf("%s%v%ss", "%", v, "%"))
 	}
 	tx.Find(&res)
 	err = tx.Error
