@@ -3,6 +3,7 @@ package controller
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -13,12 +14,9 @@ import (
 )
 
 func EnterpriseUpdate(ctx *gin.Context) (res RawResponse, err error) {
-	appID := ctx.Query("app_id")
-	if appID == "" {
-		res = []byte("参数校验失败,缺少app_id")
-		return
-	}
+
 	clientBody := &bytes.Reader{}
+	var appID string
 	if err = func() error {
 		body := ctx.Request.Body
 		bodyMap := map[string]interface{}{}
@@ -26,11 +24,25 @@ func EnterpriseUpdate(ctx *gin.Context) (res RawResponse, err error) {
 		if err != nil {
 			return fmt.Errorf("decode failed")
 		}
-		//添加uid
+		//校验app_id
+		v, ok := bodyMap["app_id"]
+		if !ok {
+			return errors.New("参数校验失败,缺少app_id")
+		}
+		vs, okForce := v.(string)
+		if !okForce {
+			return errors.New("app_id需要为string")
+		}
+		if vs == "" {
+			return errors.New("参数校验失败,缺少app_id")
+		}
+		appID = vs
 		j, _ := json.Marshal(bodyMap)
 		clientBody = bytes.NewReader(j)
 		return nil
 	}(); err != nil {
+		//直接把错误抛给后端
+		res = []byte(err.Error())
 		return
 	}
 	//发送请求
