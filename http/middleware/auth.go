@@ -10,8 +10,7 @@ import (
 
 //登录态信息, 请求context公用
 type AuthInfo struct {
-	AppID string `json:"app"`
-	UID   string `json:"uid"`
+	UID string `json:"uid"`
 }
 
 //从请求体内拿登录态信息

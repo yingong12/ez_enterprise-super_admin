@@ -77,7 +77,21 @@ func bootStrap() (err error) {
 			return e
 		}
 	}
-
+	//http client
+	httpClients := []*library.HttpClientConfig{
+		{
+			Name:     "static_server",
+			BaseURL:  `http://` + env.GetStringVal("LB_COMPANY_SERVICE"),
+			Receiver: &providers.HttpClientCompanyService,
+		},
+	}
+	for _, cfg := range httpClients {
+		if cfg.Receiver == nil {
+			return fmt.Errorf("config receiver cannot be nil")
+		}
+		*cfg.Receiver = library.NewHttpClient(cfg)
+		(**cfg.Receiver).BaseURL = cfg.BaseURL
+	}
 	//http server
 	err, shutdownHttpServer := http.Start(serverPort)
 	if err != nil {

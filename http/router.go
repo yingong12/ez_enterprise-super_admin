@@ -35,12 +35,19 @@ func loadRouter() (router *gin.Engine) {
 		//估值
 		valuate := guarded.Group("valuate")
 		{
-			valuate.POST("get_details", controller.STDwrapperJSON(controller.GetValuateDetails))
+			valuate.POST("", controller.ForwardEnterpriseRequest)
+			valuate.Any("*url", controller.ForwardEnterpriseRequest)
 		}
-		//转发
-		guarded.Any("enterprise/*url", controller.STDwrapperJSON(controller.ForwardCompanyService))
-		guarded.Any("group/*url", controller.STDwrapperJSON(controller.FowardGroupService))
-		guarded.Any("audit/*url", controller.STDwrapperJSON(controller.FowardAuditService))
+		//企业
+		company := guarded.Group("enterprise", controller.ForwardEnterpriseRequest)
+		{
+			company.POST("", controller.ForwardEnterpriseRequest)
+			company.Any("*url", controller.ForwardEnterpriseRequest)
+		}
 	}
+	//区分网关和业务侧404
+	router.NoRoute(func(ctx *gin.Context) {
+		ctx.Writer.Write([]byte("Gateway 404"))
+	})
 	return
 }
