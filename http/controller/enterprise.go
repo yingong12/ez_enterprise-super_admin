@@ -15,7 +15,7 @@ import (
 func EnterpriseUpdate(ctx *gin.Context) (res RawResponse, err error) {
 	appID := ctx.Query("app_id")
 	if appID == "" {
-		res = []byte("缺少app_id")
+		res = []byte("参数校验失败,缺少app_id")
 		return
 	}
 	clientBody := &bytes.Reader{}

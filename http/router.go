@@ -39,7 +39,7 @@ func loadRouter() (router *gin.Engine) {
 			valuate.Any("*url", controller.ForwardEnterpriseRequest)
 		}
 		//企业
-		company := guarded.Group("enterprise", controller.ForwardEnterpriseRequest)
+		company := guarded.Group("enterprise")
 		{
 			company.POST("", controller.ForwardEnterpriseRequest)
 			company.Any("*url", controller.ForwardEnterpriseRequest)
