@@ -85,7 +85,7 @@ func SearchUser(ctx *gin.Context) (res STDResponse, err error) {
 		res.Msg = err.Error()
 		return
 	}
-	list, err := service.SearchUser(req.Filters, req.Page, req.PageSize)
+	list, err := service.SearchUser(req.Filters, req.Page, req.PageSize, req.NeedbBannedUsers)
 	if err != nil {
 		res.Code = buz_code.CODE_SERVER_ERROR
 		res.Msg = err.Error()

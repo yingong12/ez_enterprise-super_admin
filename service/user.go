@@ -26,7 +26,7 @@ var dict = []string{
 	"username", "name", "uid",
 }
 
-func SearchUser(Filters []request.Filter, page, pageSize int) (res []model.User, err error) {
+func SearchUser(Filters []request.Filter, page, pageSize int, ignoreState bool) (res []model.User, err error) {
 	//
 	whereMap := map[string]string{}
 	for _, filter := range Filters {
@@ -40,6 +40,9 @@ func SearchUser(Filters []request.Filter, page, pageSize int) (res []model.User,
 	for k, v := range whereMap {
 		s := fmt.Sprintf("%s like ?", k)
 		tx.Where(s, fmt.Sprintf("%s%v%s", "%", v, "%"))
+	}
+	if !ignoreState {
+		tx.Where("state", 0)
 	}
 	tx.Find(&res)
 	err = tx.Error

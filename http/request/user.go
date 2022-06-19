@@ -17,9 +17,10 @@ type SignUpUsernameRequest struct {
 }
 
 type SearchUser struct {
-	Filters  []Filter `json:"filters"`
-	Page     int      `json:"page"`
-	PageSize int      `json:"page_size"`
+	Filters          []Filter `json:"filters"`
+	Page             int      `json:"page"`
+	PageSize         int      `json:"page_size"`
+	NeedbBannedUsers bool     `json:"need_banned_users"` /*是否需要展示state 为1的*/
 }
 
 type Filter struct {
