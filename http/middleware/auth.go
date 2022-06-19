@@ -10,7 +10,8 @@ import (
 
 //登录态信息, 请求context公用
 type AuthInfo struct {
-	UID string `json:"uid"`
+	UID  string `json:"uid"`
+	Role uint8  `json:"role"`
 }
 
 //从请求体内拿登录态信息
@@ -24,6 +25,14 @@ func Auth() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		//
 		token := c.Request.Header.Get("o_access_token")
+		if token == "" {
+			c.JSON(http.StatusOK, gin.H{
+				"code": buz_code.CODE_AUTH_FAILED,
+				"msg":  "缺少token",
+			})
+			c.Abort()
+			return
+		}
 		uid, err := openAuth(token)
 		if err != nil {
 			//网络错误
@@ -53,6 +62,29 @@ func Auth() gin.HandlerFunc {
 //HeaderInjector injects the header to the request
 func HeaderInjector() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+		ctx.Next()
+	}
+}
+func SuperAdmin() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
+		authInfo, ok := ctx.Get("auth_info")
+		if !ok {
+			ctx.JSON(http.StatusOK, gin.H{
+				"code": buz_code.CODE_AUTH_FAILED,
+				"msg":  "未登录",
+			})
+			ctx.Abort()
+			return
+		}
+		//超级管理员
+		if authInfo.(AuthInfo).Role == 1 {
+			ctx.JSON(http.StatusOK, gin.H{
+				"code": buz_code.CODE_UNAUTHORIZED,
+				"msg":  "非超级管理员无权限访问",
+			})
+			ctx.Abort()
+			return
+		}
 		ctx.Next()
 	}
 }

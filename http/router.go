@@ -25,9 +25,10 @@ func loadRouter() (router *gin.Engine) {
 	guarded := router.Group("")
 	{
 		guarded.Use(middleware.Auth())
-		//用户
+		//O端用户
 		user := guarded.Group("user")
 		{
+			user.Use(middleware.SuperAdmin()) //TODO:超级管理员才能用
 			user.POST("create", controller.STDwrapperJSON(controller.AddUser))
 			user.POST("update", controller.STDwrapperJSON(controller.UpdateUser))
 			user.POST("search", controller.STDwrapperJSON(controller.SearchUser))
@@ -39,10 +40,16 @@ func loadRouter() (router *gin.Engine) {
 			valuate.Any("*url", controller.ForwardEnterpriseRequest)
 		}
 		//企业
-		company := guarded.Group("enterprise")
+		enterprise := guarded.Group("enterprise")
 		{
-			company.POST("", controller.ForwardEnterpriseRequest)
-			company.Any("*url", controller.ForwardEnterpriseRequest)
+			enterprise.POST("", controller.ForwardEnterpriseRequest)
+			enterprise.Any("*url", controller.ForwardEnterpriseRequest)
+		}
+		//审核
+		audit := guarded.Group("audit")
+		{
+			audit.Any("", controller.ForwardEnterpriseRequest)
+			audit.Any("*url", controller.ForwardEnterpriseRequest)
 		}
 	}
 	//区分网关和业务侧404

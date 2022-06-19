@@ -23,7 +23,7 @@ func ControllerErrorLogger() gin.HandlerFunc {
 	}
 }
 
-//访问日志
+//访问日志,同时记录操作人员
 func RequestLogger() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		//后置
@@ -33,7 +33,12 @@ func RequestLogger() gin.HandlerFunc {
 
 		after := time.Now()
 		//配置到单独logger
-		log.Printf("[response_time]:%dms, [end_point]:%s, [method]:%s, [body]:%s\n", after.Sub(before).Milliseconds(), ctx.Request.URL.Path, ctx.Request.Method, removeJSONIndent(bodyStream))
+		authInfo, ok := ctx.Get("auth_info")
+		uid := ""
+		if ok {
+			uid = authInfo.(AuthInfo).UID
+		}
+		log.Printf("[response_time]:%dms, [end_point]:%s, [method]:%s, [body]:%s, [operator]:%s\n", after.Sub(before).Milliseconds(), ctx.Request.URL.Path, ctx.Request.Method, removeJSONIndent(bodyStream), uid)
 	}
 }
 

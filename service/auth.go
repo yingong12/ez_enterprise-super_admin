@@ -29,7 +29,7 @@ func SignUpUsername(username, pswd string, role uint8) (accessToken, uid string,
 			return
 		}
 		//没问题后注册用户并登录
-		accessToken, err = setLoginStatus(uid)
+		accessToken, err = setLoginStatus(uid, role)
 		tx.Commit()
 	}()
 	//没被注册才继续
@@ -54,15 +54,16 @@ func SignInUsername(username, pswd string) (accessToken, uid string, err error) 
 		return
 	}
 	uid = usr.UID
-	accessToken, err = setLoginStatus(uid)
+	role := usr.Role
+	accessToken, err = setLoginStatus(uid, role)
 	return
 
 }
 
 //设置登录态
-func setLoginStatus(uid string) (accessToken string, err error) {
+func setLoginStatus(uid string, role uint8) (accessToken string, err error) {
 	accessToken = utils.GenerateOAccessToken()
-	err = repository.SetLoginStatus(uid, accessToken)
+	err = repository.SetLoginStatus(uid, role, accessToken)
 	return
 }
 

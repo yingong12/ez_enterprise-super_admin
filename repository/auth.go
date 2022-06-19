@@ -11,10 +11,11 @@ import (
 	"gorm.io/gorm/clause"
 )
 
-func SetLoginStatus(uid, accessToken string) (err error) {
+func SetLoginStatus(uid string, role uint8, accessToken string) (err error) {
 	prefixedToken := env.GetStringVal("KEY_PREFIX_O_TOKEN") + accessToken
 	if cmd := providers.RedisClient.HMSet(prefixedToken, map[string]interface{}{
-		"uid": uid,
+		"uid":  uid,
+		"role": role,
 	}); cmd.Err() != nil {
 		return cmd.Err()
 	}
