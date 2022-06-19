@@ -43,9 +43,9 @@ definitions:
     type: object
   response.SignInUsernameRsp:
     properties:
-      b_access_token:
+      o_access_token:
         description: b端用户token
-        example: b_u_uasdasd
+        example: o_u_uasdasd
         type: string
       uid:
         description: 用户ID
@@ -53,9 +53,9 @@ definitions:
     type: object
   response.SignUpRsp:
     properties:
-      b_access_token:
+      o_access_token:
         description: b端用户token
-        example: b_u_uasdasd
+        example: o_u_uasdasd
         type: string
       uid:
         description: 用户ID

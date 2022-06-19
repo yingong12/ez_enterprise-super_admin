@@ -168,10 +168,10 @@ const docTemplate = `{
         "response.SignInUsernameRsp": {
             "type": "object",
             "properties": {
-                "b_access_token": {
+                "o_access_token": {
                     "description": "b端用户token",
                     "type": "string",
-                    "example": "b_u_uasdasd"
+                    "example": "o_u_uasdasd"
                 },
                 "uid": {
                     "description": "用户ID",
@@ -182,10 +182,10 @@ const docTemplate = `{
         "response.SignUpRsp": {
             "type": "object",
             "properties": {
-                "b_access_token": {
+                "o_access_token": {
                     "description": "b端用户token",
                     "type": "string",
-                    "example": "b_u_uasdasd"
+                    "example": "o_u_uasdasd"
                 },
                 "uid": {
                     "description": "用户ID",
