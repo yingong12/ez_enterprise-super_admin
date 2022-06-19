@@ -36,7 +36,7 @@ func RequestLogger() gin.HandlerFunc {
 		authInfo, ok := ctx.Get("auth_info")
 		uid := ""
 		if ok {
-			uid = authInfo.(AuthInfo).UID
+			uid = authInfo.(*AuthInfo).UID
 		}
 		log.Printf("[response_time]:%dms, [end_point]:%s, [method]:%s, [body]:%s, [operator]:%s\n", after.Sub(before).Milliseconds(), ctx.Request.URL.Path, ctx.Request.Method, removeJSONIndent(bodyStream), uid)
 	}
