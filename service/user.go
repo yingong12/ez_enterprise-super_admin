@@ -39,7 +39,7 @@ func SearchUser(Filters []request.Filter, page, pageSize int) (res []model.User,
 
 	for k, v := range whereMap {
 		s := fmt.Sprintf("%s like ?", k)
-		tx.Where(s, fmt.Sprintf("%s%v%ss", "%", v, "%"))
+		tx.Where(s, fmt.Sprintf("%s%v%s", "%", v, "%"))
 	}
 	tx.Find(&res)
 	err = tx.Error

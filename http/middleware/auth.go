@@ -77,7 +77,7 @@ func SuperAdmin() gin.HandlerFunc {
 			return
 		}
 		//超级管理员
-		if authInfo.(AuthInfo).Role == 1 {
+		if authInfo.(*AuthInfo).Role == 1 {
 			ctx.JSON(http.StatusOK, gin.H{
 				"code": buz_code.CODE_UNAUTHORIZED,
 				"msg":  "非超级管理员无权限访问",
