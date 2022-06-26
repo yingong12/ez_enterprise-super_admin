@@ -66,10 +66,6 @@ func EnterpriseUpdate(ctx *gin.Context) (res RawResponse, err error) {
 	res = data
 	return
 }
-func FowardGroupRequest(ctx *gin.Context) {
-	Proxy(ctx, env.GetStringVal("LB_COMPANY_SERVICE"))
-	return
-}
 
 func ForwardEnterpriseRequest(ctx *gin.Context) {
 	//企业更新。 转发

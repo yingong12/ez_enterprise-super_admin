@@ -45,6 +45,12 @@ func loadRouter() (router *gin.Engine) {
 			enterprise.POST("", controller.ForwardEnterpriseRequest)
 			enterprise.Any("*url", controller.ForwardEnterpriseRequest)
 		}
+		//机构
+		group := guarded.Group("group")
+		{
+			group.POST("", controller.FowardGroupRequest)
+			group.Any("*url", controller.FowardGroupRequest)
+		}
 		//审核
 		audit := guarded.Group("audit")
 		{
