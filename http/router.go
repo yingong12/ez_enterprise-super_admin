@@ -36,7 +36,7 @@ func loadRouter() (router *gin.Engine) {
 		//估值
 		valuate := guarded.Group("valuate")
 		{
-			valuate.POST("", controller.ForwardEnterpriseRequest)
+			valuate.Any("", controller.ForwardEnterpriseRequest)
 			valuate.Any("*url", controller.ForwardEnterpriseRequest)
 		}
 		//企业
@@ -48,7 +48,7 @@ func loadRouter() (router *gin.Engine) {
 		//机构
 		group := guarded.Group("group")
 		{
-			group.POST("", controller.FowardGroupRequest)
+			group.Any("", controller.FowardGroupRequest)
 			group.Any("*url", controller.FowardGroupRequest)
 		}
 		//审核
